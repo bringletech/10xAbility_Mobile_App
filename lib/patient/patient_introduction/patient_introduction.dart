@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../common/colors/colors.dart';
-import '../common/commonButton/common_button.dart';
-import '../common/commonText/common_text.dart';
-import '../common/string_constant.dart';
-import 'patient_login_screen.dart';
+import '../../common/colors/colors.dart';
+import '../../common/commonButton/common_button.dart';
+import '../../common/commonText/common_text.dart';
+import '../../common/string_constant.dart';
+import '../patient_otp/patient_login_screen.dart';
 
 class PatientIntroduction extends StatefulWidget {
   const PatientIntroduction({super.key});
@@ -78,6 +78,7 @@ class _PatientIntroductionState extends State<PatientIntroduction> with TickerPr
         reverseTransitionDuration: Duration.zero,
       ),
     );
+    //Navigator.pop(context);
   }
 
   @override

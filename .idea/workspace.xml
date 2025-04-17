@@ -9,7 +9,82 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc09777b-1b4b-4cc8-a33b-c564c5bae81f" name="Changes" comment="" />
+    <list default="true" id="dc09777b-1b4b-4cc8-a33b-c564c5bae81f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/fontFamily/Roboto.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/counsellorLoginImage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/drawerDesign.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/image_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/image_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/image_3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/image_4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/inPerson.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/pdf.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/person.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/video.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/zoom_icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/svgIcon/appointment.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/svgIcon/bell2.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/svgIcon/download.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/svgIcon/edit.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/svgIcon/inPerson.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/svgIcon/zoom.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/auth/api_services/api_service.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/auth/base_url/base_url.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/auth/model/aws_response_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/auth/model/mobile_verify_response_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/auth/model/otp_verify_response_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/auth/model/upload_profile_picture_response_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_Home/counsellor_dashboard.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_Home/counsellor_home.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_Home/custom_drawer.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_appointment/bookings_counsellor.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_chat/councellorChat.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_chat/councellor_chat_online.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_my_history/counsellor_my_history.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_my_history/history_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_notifications/counsellor_notification.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_otp/councellor_mobile_verify.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_otp/councellor_otp_verify.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_profile/counsellor_profile.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_register/counsellor_register.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_register/documents_register.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_register/register_next.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/councellor/councellor_settings/counsellor_setting.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/patient/patient_my_history/patient_my_history.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/tenx_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tenx_app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/counsellor.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/counsellor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/common/colors/colors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common/colors/colors.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/common/commonText/common_text.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common/commonText/common_text.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/common/commonText/common_text_colors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common/commonText/common_text_colors.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patientBooking/patient_book_therapy.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patientBooking/patient_book_therapy.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patientBooking/patient_bookings.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patientBooking/patient_bookings.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patientChat/patient_chat_online.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patientChat/patient_chat_online.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patientExplore/patient_explore.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patientExplore/patient_explore.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patientHome/patient_home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patientHome/patient_home.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patientSelfAssessment/patient_self_assessment.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patientSelfAssessment/patient_self_assessment.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patientServices/patient_services.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patientServices/patient_services.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patient_dashboard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patientHome/patient_dashboard.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patient_introduction.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patient_introduction/patient_introduction.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patient_login_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patient_otp/patient_login_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patient_otp_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patient_otp/patient_otp_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/patient_register_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patient_register/patient_register_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/patient/registeration_done_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/patient/patient_register/registeration_done_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/splash_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/splash_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/user_type_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/user_type/user_type_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,6 +100,21 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;bringletech&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/bringletech/10xAbility_Mobile_App.git&quot;,
+    &quot;accountId&quot;: &quot;1122c6ee-3626-4d39-844a-b08ad02fabc6&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 3
@@ -39,31 +129,34 @@
     &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/apple/Desktop/tenx_app/assets/svgIcon&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/apple/Desktop/tenx_app/lib/patient/patient_my_history&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;dart.settings&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets/svgIcon" />
+      <recent name="$PROJECT_DIR$/lib/patient/patient_my_history" />
       <recent name="$PROJECT_DIR$/assets/images" />
-      <recent name="$PROJECT_DIR$/lib/patient/patientProfile" />
-      <recent name="$PROJECT_DIR$/lib/patient/patientBooking" />
-      <recent name="$PROJECT_DIR$/lib/patient/patientSelfAssessment" />
+      <recent name="$PROJECT_DIR$/lib/councellor/councellor_settings" />
+      <recent name="$PROJECT_DIR$/lib/councellor/councellor_notifications" />
+      <recent name="$PROJECT_DIR$/lib/councellor/councellor_register" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/lib/controller" />
-      <recent name="$PROJECT_DIR$/lib/patient/patientServices" />
+      <recent name="$PROJECT_DIR$/lib/user_type" />
+      <recent name="$PROJECT_DIR$/lib/patient/patient_introduction" />
       <recent name="$PROJECT_DIR$/lib/patient/patientHome" />
-      <recent name="$PROJECT_DIR$/lib/patient/patientExplore" />
-      <recent name="$PROJECT_DIR$/lib/patient/patientChat" />
+      <recent name="$PROJECT_DIR$/lib/patient/patient_register" />
+      <recent name="$PROJECT_DIR$/lib/patient/patient_otp" />
     </key>
   </component>
   <component name="RunManager">

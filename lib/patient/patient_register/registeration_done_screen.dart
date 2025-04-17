@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ten_x_app/common/colors/colors.dart';
 import 'package:video_player/video_player.dart';
 
-import 'patient_dashboard.dart';
+import '../patientHome/patient_dashboard.dart';
 
 
 class RegistrationDoneScreen extends StatefulWidget {
@@ -22,12 +22,12 @@ class _RegistrationDoneScreenState extends State<RegistrationDoneScreen> {
         _controller.play();
       });
 
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context)=>PatientDashboard()),
-      );
-    });
+    // Future.delayed(Duration(seconds: 2), () {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context)=>PatientDashboard()),
+    //   );
+    // });
   }
 
   @override

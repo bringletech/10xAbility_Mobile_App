@@ -62,6 +62,7 @@ class _PatientBookingsState extends State<PatientBookings> {
               ),
               SizedBox(height: 10,),
               ListView.builder(
+                  padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: showAll ? items.length : 2,
@@ -87,7 +88,7 @@ class _PatientBookingsState extends State<PatientBookings> {
                         ],
                       ),
                       //color: Colors.deepOrange,
-                      child: Row(
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             decoration: BoxDecoration(
@@ -243,7 +244,7 @@ class _PatientBookingsState extends State<PatientBookings> {
                         ],
                       ),
                       //color: Colors.deepOrange,
-                      child: Row(
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             decoration: BoxDecoration(

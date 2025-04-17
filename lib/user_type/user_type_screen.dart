@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'common/colors/colors.dart';
-import 'common/commonButton/common_button.dart';
-import 'common/commonText/common_text.dart';
-import 'patient/patient_introduction.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../common/colors/colors.dart';
+import '../common/commonButton/common_button.dart';
+import '../common/commonText/common_text.dart';
+import '../councellor/councellor_otp/councellor_mobile_verify.dart';
+import '../patient/patient_introduction/patient_introduction.dart';
 
 class UserTypeScreen extends StatefulWidget {
   const UserTypeScreen({super.key});
@@ -30,7 +32,6 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
   void initState() {
     super.initState();
 
-    // Logo Animation
     _logoController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _logoSlide = Tween<Offset>(begin: const Offset(0, -2), end: Offset.zero).animate(
       CurvedAnimation(parent: _logoController, curve: Curves.easeOut),
@@ -39,7 +40,6 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
       CurvedAnimation(parent: _logoController, curve: Curves.easeIn),
     );
 
-    // Text Animation
     _textController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
     _textFade = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _textController, curve: Curves.easeIn),
@@ -48,7 +48,6 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
       CurvedAnimation(parent: _textController, curve: Curves.easeOut),
     );
 
-    // Button Animation
     _buttonController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
     _buttonSlide = Tween<Offset>(begin: const Offset(0, 1.5), end: Offset.zero).animate(
       CurvedAnimation(parent: _buttonController, curve: Curves.easeOut),
@@ -68,14 +67,18 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
     _buttonController.forward();
   }
 
-  // Hide all animations before navigating
+  Future<void> _saveUserType(String userType) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userType', userType);
+  }
+
   void _hideAllAndNavigate(VoidCallback onComplete) async {
     await Future.wait([
-      _buttonController.reverse(), // Slide buttons down and fade out
-      _logoController.reverse(), // Slide logo up and fade out
-      _textController.reverse(), // Slide text up and fade out
+      _buttonController.reverse(),
+      _logoController.reverse(),
+      _textController.reverse(),
     ]);
-    await Future.delayed(const Duration(microseconds: 300)); // Wait for animation to finish
+    await Future.delayed(const Duration(milliseconds: 300));
     onComplete();
   }
 
@@ -97,7 +100,6 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Logo Animation
                 SlideTransition(
                   position: _logoSlide,
                   child: FadeTransition(
@@ -112,7 +114,6 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
 
                 const SizedBox(height: 40),
 
-                // "Log In As" Text Animation
                 SlideTransition(
                   position: _textSlide,
                   child: FadeTransition(
@@ -128,7 +129,6 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
 
                 const SizedBox(height: 40),
 
-                // Buttons (Smooth Slide & Fade)
                 AnimatedOpacity(
                   opacity: _buttonOpacity,
                   duration: const Duration(milliseconds: 500),
@@ -139,15 +139,17 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
                         child: FadeTransition(
                           opacity: _buttonFade,
                           child: CommonFirstButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              await _saveUserType("patient");
                               _hideAllAndNavigate(() {
+                                Navigator.pop(context);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => PatientIntroduction()),
                                 );
                               });
                             },
-                            text: 'Patient',
+                            text: 'User',
                             height: 55,
                             width: 244,
                             imageUrl: "assets/svgIcon/patientIcon.svg",
@@ -164,9 +166,14 @@ class _UserTypeScreenState extends State<UserTypeScreen> with TickerProviderStat
                         child: FadeTransition(
                           opacity: _buttonFade,
                           child: CommonFirstButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              await _saveUserType("therapist");
                               _hideAllAndNavigate(() {
-                                // Navigate to Counsellor Screen
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => CounsellorMobileVerifyScreen()),
+                                );
                               });
                             },
                             text: 'Counsellor',

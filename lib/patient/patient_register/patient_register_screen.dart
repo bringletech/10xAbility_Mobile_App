@@ -1,14 +1,21 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:ten_x_app/common/colors/colors.dart';
-import '../common/commonButton/common_button.dart';
-import '../common/commonText/common_text.dart';
-import '../common/commonTextField/common_text_field.dart';
-import '../common/string_constant.dart';
+import '../../auth/api_services/api_service.dart';
+import '../../auth/model/aws_response_model.dart';
+import '../../auth/model/upload_profile_picture_response_model.dart';
+import '../../common/commonButton/common_button.dart';
+import '../../common/commonText/common_text.dart';
+import '../../common/commonTextField/common_text_field.dart';
+import '../../common/string_constant.dart';
 import 'registeration_done_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
 
 class PatientRegisterScreen extends StatefulWidget {
   const PatientRegisterScreen({super.key});
@@ -23,11 +30,15 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
   String formattedDate = "";
   DateTime selectedDate = DateTime.now();
   File? _image;
+  String presignedUrl = "",teenagerName = "",age = "", objectUrl = "",extensionWithoutDot = "";
+  String? extension;
+  String? fileName;
+  bool isLoading = false;
   final ImagePicker _picker = ImagePicker();
 
   final TextEditingController dueDateController = TextEditingController();
   final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
+  //final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController problemController = TextEditingController();
@@ -43,14 +54,39 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
   final TextEditingController emergencyRelationController = TextEditingController();
   final TextEditingController birthController = TextEditingController();
 
+  // Future<void> _pickImage(ImageSource source) async {
+  //   final pickedFile = await _picker.pickImage(source: source);
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _image = File(pickedFile.path);
+  //     });
+  //   }
+  // }
+
   Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-    if (pickedFile != null) {
+    final XFile? photo = await _picker.pickImage(source: source);
+
+    if (photo != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _image = File(photo.path);
+        fileName = p.basename(photo.path); // Get file name with extension
+        String extension = p.extension(photo.path); // Get extension with dot
+        extensionWithoutDot = extension.substring(1); // Remove dot
+        print("File Name: $fileName");
+        print("File Extension (with dot): $extension");
+        print("File Extension (without dot): $extensionWithoutDot");
       });
+
+      // Auto upload image after selection
+      await getAwsUrl();
     }
   }
+
+  void updateUI() {
+    setState(() {});
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +97,7 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: 0),
+                    padding: EdgeInsets.only(top: 0),
                     child: Stack(
                       children: [
                         Container(
@@ -73,7 +109,7 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                           // height: 200,
                           //   width: 200,
                           child: SvgPicture.asset("assets/svgIcon/patientRegisterImage2.svg"),
-                            //child: Image.asset("assets/images/patientRegisterImage.png")
+                          //child: Image.asset("assets/images/patientRegisterImage.png")
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 80),
@@ -95,47 +131,54 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                                       : null,
                                   child: _image == null
                                       ? Icon(
-                                          Icons.person,
-                                          size: 60,
-                                          color: Colors.grey[600],
-                                        )
+                                    Icons.person,
+                                    size: 60,
+                                    color: Colors.grey[600],
+                                  )
                                       : null,
                                 ),
                                 Positioned(
                                   bottom: 10,
                                   right: 5,
                                   child: GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (context) => SafeArea(
-                                          child: Wrap(
-                                            children: <Widget>[
-                                              ListTile(
-                                                leading:
-                                                    Icon(Icons.photo_camera),
-                                                title: Text('Take a picture'),
-                                                onTap: () {
-                                                  Navigator.of(context).pop();
-                                                  _pickImage(
-                                                      ImageSource.camera);
-                                                },
-                                              ),
-                                              ListTile(
-                                                leading:
-                                                    Icon(Icons.photo_library),
-                                                title:
-                                                    Text('Choose from gallery'),
-                                                onTap: () {
-                                                  Navigator.of(context).pop();
-                                                  _pickImage(
-                                                      ImageSource.gallery);
-                                                },
-                                              ),
-                                            ],
+                                    onTap: () async {
+                                      var cameraStatus =
+                                          await Permission.camera.request();
+                                      if (cameraStatus.isGranted) {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) => SafeArea(
+                                            child: Wrap(
+                                              children: <Widget>[
+                                                ListTile(
+                                                  leading:
+                                                  Icon(Icons.photo_camera),
+                                                  title: Text('Take a picture'),
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                    _pickImage(
+                                                        ImageSource.camera);
+                                                  },
+                                                ),
+                                                ListTile(
+                                                  leading:
+                                                  Icon(Icons.photo_library),
+                                                  title:
+                                                  Text('Choose from gallery'),
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                    _pickImage(
+                                                        ImageSource.gallery);
+                                                  },
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      } else {
+                                        print("Camera permission denied");
+                                      }
+
                                     },
                                     child: Container(
                                       height: 30,
@@ -161,21 +204,9 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   child: CommonTextField(
-                    hintText: 'Enter your first name',
-                    text: 'First Name',
+                    hintText: 'Enter your full name',
+                    text: 'Full Name',
                     controller: firstNameController,
-                    inputType: TextInputType.text,
-                    readOnly: false,
-                    height: 50,
-                    width: 380,),
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: CommonTextField(
-                    hintText: 'Enter your Last name',
-                    text: 'last Name',
-                    controller: lastNameController,
                     inputType: TextInputType.text,
                     readOnly: false,
                     height: 50,
@@ -250,8 +281,8 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                 ),
                 SizedBox(height: 10,),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       margin: EdgeInsets.only(left: 20),
@@ -299,7 +330,7 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                                 hint: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: Text(
-                                      "Select Gender",
+                                    "Select Gender",
                                     style: TextStyle(
                                       color: AppColors.gray, // Change hint text color
                                       fontSize: 11, // Change font size
@@ -330,15 +361,26 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                 ),
                 SizedBox(height: 10,),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 20),
+                    //   child: CommonTextField(
+                    //     hintText: 'Enter your Preferred Language',
+                    //     text: 'Preferred Language',
+                    //     controller: languageController,
+                    //     inputType: TextInputType.text,
+                    //     readOnly: false,
+                    //     height: 50,
+                    //     width: 155,),
+                    // ),
                     Container(
                       margin: EdgeInsets.only(left: 20),
                       child: CommonTextField(
-                        hintText: 'Enter your Preferred Language',
-                        text: 'Preferred Language',
-                        controller: languageController,
+                        hintText: 'Enter your Country',
+                        text: 'Country',
+                        controller: countryController,
                         inputType: TextInputType.text,
                         readOnly: false,
                         height: 50,
@@ -360,15 +402,15 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                 ),
                 SizedBox(height: 10,),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       margin: EdgeInsets.only(left: 20),
                       child: CommonTextField(
-                        hintText: 'Enter your Country',
-                        text: 'Country',
-                        controller: countryController,
+                        hintText: 'Enter your City',
+                        text: 'City',
+                        controller: cityController,
                         inputType: TextInputType.text,
                         readOnly: false,
                         height: 50,
@@ -391,22 +433,22 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                 SizedBox(height: 10,),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 20),
+                    //   child: CommonTextField(
+                    //     hintText: 'Enter your City',
+                    //     text: 'City',
+                    //     controller: cityController,
+                    //     inputType: TextInputType.text,
+                    //     readOnly: false,
+                    //     height: 50,
+                    //     width: 155,),
+                    // ),
+                    // SizedBox(width: 10,),
                     Container(
                       margin: EdgeInsets.only(left: 20),
-                      child: CommonTextField(
-                        hintText: 'Enter your City',
-                        text: 'City',
-                        controller: cityController,
-                        inputType: TextInputType.text,
-                        readOnly: false,
-                        height: 50,
-                        width: 155,),
-                    ),
-                    SizedBox(width: 10,),
-                    Container(
-                      margin: EdgeInsets.only(right: 20),
                       child: CommonTextField(
                         hintText: 'Enter your Pincode',
                         text: 'Pin code',
@@ -419,49 +461,7 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                   ],
                 ),
                 SizedBox(height: 30,),
-                CommonText(
-                  text: StringConstant.eme,
-                  fontSize: 20,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w500,
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: CommonTextField(
-                    hintText: 'Emergency Contact Name',
-                    text: 'Emergency Contact Name',
-                    controller: emergencyNameController,
-                    inputType: TextInputType.text,
-                    readOnly: false,
-                    height: 50,
-                    width: 380,),
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: CommonTextField(
-                    hintText: 'Emergency Contact Number',
-                    text: 'Emergency Contact Number',
-                    controller: emergencyNumberController,
-                    inputType: TextInputType.text,
-                    readOnly: false,
-                    height: 50,
-                    width: 380,),
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: CommonTextField(
-                    hintText: 'Emergency Relation',
-                    text: 'Emergency Contact Relation',
-                    controller: emergencyRelationController,
-                    inputType: TextInputType.text,
-                    readOnly: false,
-                    height: 50,
-                    width: 380,),
-                ),
-                SizedBox(height: 30,),
+                // SizedBox(height: 30,),
                 CommonFirstButton(
                   onPressed: () {
                     Navigator.push(
@@ -478,14 +478,101 @@ class _PatientRegisterScreenState extends State<PatientRegisterScreen> {
                   color: AppColors.white,
                 ),
                 SizedBox(height: 30,)
-
-
               ],
-
             ),
           ),
         ),
       ),
     );
   }
+
+  getAwsUrl() async {
+    String fileType = "image/$extensionWithoutDot", folder_name = "Patient-Images";
+    print('Image FileType is $fileType');
+    print('Image FileType is $folder_name');
+    setState(() {
+      isLoading = true; // Start loading
+    });
+    try {
+      AwsResponseModel model = await CallService().getAwsUrl(fileType,folder_name);
+      presignedUrl = model.presignedUrl.toString();
+      objectUrl = model.objectUrl.toString();
+      print("Presigned Url value is: $presignedUrl");
+      print("Object Url value is: $objectUrl");
+      callPresignedUrl(presignedUrl);
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: "Failed to update details. Please try again.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } finally {
+      setState(() {
+        isLoading = false; // Stop loading
+      });
+    }
+  }
+
+  Future<void> callPresignedUrl(String presignedUrl) async {
+    try {
+      Uri url = Uri.parse(presignedUrl);
+      print("Url is $url");
+
+      // Read the image file as bytes
+      final imageBytes = await _image!.readAsBytes();
+
+      // Make the PUT request
+      var response = await http.put(
+        url,
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'image/$extensionWithoutDot', // Replace 'image/jpeg' with your image type if needed
+        },
+        body: imageBytes,
+      );
+
+      // Handle the response
+      print("Response is $response");
+      print("Response body: ${response.body}");
+      print("Upload Image Response code is: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        isLoading = false;
+        print("Uploaded user profile image successfully");
+        uploadPatientProfilePic();
+        // updateUI();
+      } else {
+        print("Failed to upload image. Status code: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("An error occurred: $e");
+    }
+  }
+
+  void uploadPatientProfilePic() async {
+    isLoading = true;
+      var map = {
+        'newprofilePicture': objectUrl,
+      };
+      print("Uploaded Profile Pic Map value is : $map");
+    Upload_Profile_Picture_Response_Model model =
+      await CallService().uploadProfilePic(map);
+      String message = model.message.toString();
+      print("Update Profile Response $message");
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+       updateUI();
+    }
+
 }

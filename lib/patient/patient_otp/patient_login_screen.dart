@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import '../common/colors/colors.dart';
-import '../common/commonButton/common_button_get_otp.dart';
-import '../common/commonText/common_text.dart';
-import '../common/commonText/common_text_colors.dart';
-import '../common/string_constant.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../auth/api_services/api_service.dart';
+import '../../auth/model/mobile_verify_response_model.dart';
+import '../../common/colors/colors.dart';
+import '../../common/commonButton/common_button_get_otp.dart';
+import '../../common/commonText/common_text.dart';
+import '../../common/commonText/common_text_colors.dart';
+import '../../common/string_constant.dart';
 import 'patient_otp_screen.dart';
 
 class PatientLoginScreen extends StatefulWidget {
@@ -23,6 +27,8 @@ class _PatientLoginScreenState extends State<PatientLoginScreen>
   late Animation<Offset> _containerSlideAnimation;
   late Animation<double> _containerFadeAnimation;
   bool _startAnimation = false;
+  bool isLoading = false;
+
 
   void initState() {
     super.initState();
@@ -69,12 +75,20 @@ class _PatientLoginScreenState extends State<PatientLoginScreen>
     setState(() {
       _startAnimation = true;
     });
-    _animationController.forward().then((_) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => PatientOtpScreen()),
-      );
-    });
+    String mobile = mobileController.text.toString();
+    if(mobile.length<10){
+      Fluttertoast.showToast(
+          msg: "Please Enter 10 Digits of your Mobile Number",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }else {
+      getOtp(mobile);
+    }
+
   }
 
   @override
@@ -233,7 +247,7 @@ class _PatientLoginScreenState extends State<PatientLoginScreen>
                               ),
                             ],
                           ),
-                          SizedBox(height: 30),
+                          SizedBox(height: 20),
                           Center(
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 30),
@@ -295,27 +309,27 @@ class _PatientLoginScreenState extends State<PatientLoginScreen>
                             ),
                           ),
                           SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CommonText(
-                                text: StringConstant.already,
-                                fontSize: 16,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w300,
-                              ),
-                              SizedBox(width: 5),
-                              CommonTextColors(
-                                text: StringConstant.logIn,
-                                fontSize: 16,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w300,
-                                color: AppColors.redOrange,
-                                textDecoration: TextDecoration.underline,
-                                decorationColor: AppColors.redOrange,
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: [
+                          //     CommonText(
+                          //       text: StringConstant.already,
+                          //       fontSize: 16,
+                          //       fontFamily: 'Poppins',
+                          //       fontWeight: FontWeight.w300,
+                          //     ),
+                          //     SizedBox(width: 5),
+                          //     CommonTextColors(
+                          //       text: StringConstant.logIn,
+                          //       fontSize: 16,
+                          //       fontFamily: 'Poppins',
+                          //       fontWeight: FontWeight.w300,
+                          //       color: AppColors.redOrange,
+                          //       textDecoration: TextDecoration.underline,
+                          //       decorationColor: AppColors.redOrange,
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),
@@ -327,5 +341,41 @@ class _PatientLoginScreenState extends State<PatientLoginScreen>
         ],
       ),
     );
+  }
+
+  Future<void> getOtp(String mobileNumber) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userType = prefs.getString('userType');
+    print("User Access Token Value is : $userType");
+    var map = Map<String, dynamic>();
+    map['phoneNo'] = mobileNumber;
+    map['userType'] = userType;
+    print("User Access Token Value is : $map");
+    isLoading = true;
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) async {
+      Mobile_Verify_Response_Model model =
+      await CallService()
+          .userLogin(map);
+      isLoading = false;
+      String message = model.message.toString();
+      String otp = model.otpdata.toString();
+      print("Otp Value is : $otp");
+      Fluttertoast.showToast(
+          msg: message,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      // Navigator.pop(context);
+      _animationController.forward().then((_) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PatientOtpScreen(mobileNumber)),
+        );
+      });
+    });
   }
 }

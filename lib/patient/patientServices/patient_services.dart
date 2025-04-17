@@ -68,13 +68,14 @@ class _PatientServicesState extends State<PatientServices> {
               ),
               SizedBox(height: 10,),
               ListView.builder(
+                  padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: items.length,
                   itemBuilder: (context, index){
                     return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                      decoration: BoxDecoration(
+                          margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                          decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(

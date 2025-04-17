@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ten_x_app/patient/patientExplore/patient_explore.dart';
-import '../common/colors/colors.dart';
-import '../common/commonText/common_text.dart';
-import '../controller/appstream_controller.dart';
-import '../controller/bottom_controller.dart';
-import 'patientBooking/patient_bookings.dart';
-import 'patientChat/patientChat.dart';
-import 'patientHome/patient_home.dart';
-import 'patientServices/patient_services.dart';
+import '../../common/colors/colors.dart';
+import '../../common/commonText/common_text.dart';
+import '../../controller/appstream_controller.dart';
+import '../../controller/bottom_controller.dart';
+import '../patientBooking/patient_bookings.dart';
+import '../patientChat/patientChat.dart';
+import 'patient_home.dart';
+import '../patientServices/patient_services.dart';
 
 
 int isAlreadySelected = 0;
@@ -158,10 +158,20 @@ class _PatientDashboardState extends State<PatientDashboard> {
           Text(
             label,
             style: TextStyle(
-              color: isSelected ? AppColors.redOrange : Colors.black,
+              color: Colors.black,
+              //color: isSelected ? AppColors.redOrange : Colors.black,
               fontSize: 12,
             ),
           ),
+          if (isSelected) // Only show dot for selected item
+            Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
+                color: AppColors.redOrange,
+                shape: BoxShape.circle,
+              ),
+            ),
         ],
       ),
     );
