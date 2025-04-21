@@ -32,15 +32,7 @@ class _PatientBookAppointmentState extends State<PatientBookAppointment> {
   final TextEditingController genderController = TextEditingController();
   bool isLoading= false;
 
-  // void _showSnackbar() {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text("Please select 'Booking For Someone Else' to fill the form."),
-  //       backgroundColor: Colors.red,
-  //       duration: Duration(seconds: 2),
-  //     ),
-  //   );
-  // }
+
 
 
   @override
