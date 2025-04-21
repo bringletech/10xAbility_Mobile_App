@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color redOrange = Color(0xffFF7758);
   static const Color melonPink = Color(0xffFFBFB2);
+  static const Color melonPink1 = Color(0xFFFFC4B7);
   static const Color softCoralPink = Color(0xffFFDAD1);
   static const Color white = Color(0xffFFFFFF);
   static const Color black = Color(0xff000000);
@@ -24,5 +25,15 @@ class AppColors {
   static const Color  special = Color(0xffFC974D);
   static const Color  pink = Color(0xffE948BC);
   static const Color  lightOrange = Color(0xffFFAD7D);
-
+  static const Color  redorange2 = Color(0xffFFDED7);
+  static const Color  greyWhite = Color(0xffE8E9ED);
+  static const Color  zoomColor = Color(0xFF0B5CFF);
+  static const Color  timeColor = Color(0xFF676767);
+  static const Color  darkOrange = Color(0xffFF5530);
+  static const Color  lightWhite = Color(0xffD9D9D9);
+  static const Color  lightBlack = Color(0xff4C4B4B);
+  static const Color  almostBlackishGray = Color(0xff424141);
+  static const Color greyBlack = Color(0xff626160);
+  static const Color lightRed = Color(0xffFFEAE6);
+  static const Color snowWhite = Color(0xffFFF8F6);
 }// TODO Implement this library.

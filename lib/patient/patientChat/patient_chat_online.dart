@@ -108,6 +108,7 @@ class _PatientChatOnlineState extends State<PatientChatOnline> {
               SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
+                  padding: EdgeInsets.zero,
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     return chatBubble(

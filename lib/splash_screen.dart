@@ -47,9 +47,14 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:ten_x_app/common/colors/colors.dart';
-import 'user_type_screen.dart';
+import 'councellor/councellor_Home/counsellor_dashboard.dart';
+import 'councellor/councellor_Home/counsellor_status_scrren.dart';
+import 'councellor/councellor_register/counsellor_register.dart';
+import 'patient/patientHome/patient_dashboard.dart';
+import 'user_type/user_type_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -63,6 +68,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   late Animation<double> _circleZoomOut;
   late Animation<double> _secondImageAnimation;
   late Animation<Color?> _backgroundColor;
+  String userType = "",
+      token = "",profileStatus="";
 
   @override
   void initState() {
@@ -79,26 +86,29 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
     // Orange Zoom-Out Animation
     _orangeZoomOut = Tween<double>(begin: 1.5, end: 0.0).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.0, 0.2, curve: Curves.easeOut)),
+      CurvedAnimation(parent: _controller,
+          curve: Interval(0.0, 0.2, curve: Curves.easeOut)),
     );
 
     // Background Color Transition (Separate from Zoom-Out)
-    _backgroundColor = ColorTween(begin: AppColors.redOrange, end: Colors.white).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.0, 0.0, curve: Curves.easeOut)),
-    );
+    _backgroundColor =
+        ColorTween(begin: AppColors.redOrange, end: Colors.white).animate(
+          CurvedAnimation(parent: _controller,
+              curve: Interval(0.0, 0.0, curve: Curves.easeOut)),
+        );
 
     _circleZoomIn = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.3, 0.5, curve: Curves.easeIn)),
+      CurvedAnimation(
+          parent: _controller, curve: Interval(0.3, 0.5, curve: Curves.easeIn)),
     );
 
     _circleZoomOut = Tween<double>(begin: 1.0, end: 0.1).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.5, 0.7, curve: Curves.easeOut)),
+      CurvedAnimation(parent: _controller,
+          curve: Interval(0.5, 0.7, curve: Curves.easeOut)),
     );
 
 
-
     _controller.forward();
-
     //
     // Timer(Duration(seconds: 6), () {
     //   Navigator.pushReplacement(
@@ -106,9 +116,86 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     //     MaterialPageRoute(builder: (context) => UserTypeScreen()),
     //   );
     // });
+    getSharedPreferenceData();
+  }
+
+  Future<void> getSharedPreferenceData() async {
+    final SharedPreferences localStorage = await SharedPreferences.getInstance();
+
+    // Retrieve language code
+    token = localStorage.getString("userToken") ?? "";
+    userType = localStorage.getString('userType') ?? "";
+    profileStatus = localStorage.getString('profileStatus') ??"";
+    print("UserToken value is $token");
+    print("UserType value is $userType");
+    print("User profile Status  value is $profileStatus");
     Future.delayed(Duration(seconds: 6), () {
-      Navigator.of(context).pushReplacement(_fadeRoute(UserTypeScreen()));
+      print("Checking navigation conditions...");
+      final status = profileStatus.toUpperCase();
+      if (userType == "patient" && token.isNotEmpty) {
+        print("Navigating to PatientDashboard");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PatientDashboard(),
+          ),
+        );
+      } else if (userType == "therapist" && token.isNotEmpty) {
+        print("User is therapist. Checking profileStatus...");
+        if (status == "APPROVED") {
+          print("Navigating to CounsellorDashboard.");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => CounsellorDashboard()),
+          );
+        } else if (["PENDING_APPROVAL", "REJECTED", "SUSPENDED"]
+            .contains(status)) {
+          print("Status is $status. Navigating to CounsellorStatusScrren.");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => CounsellorStatusScreen()),
+          );}
+          else if (["PENDING_REGISTRATION"]
+            .contains(status)) {
+          print("Status is $status. Navigating to CounsellorRegister.");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => CounsellorRegister()),
+          );
+        } else {
+          print("Unknown status. Navigating to UserTypeScreen.");
+          Navigator.of(context).pushReplacement(_fadeRoute(UserTypeScreen()));
+        }
+      } else {
+        print("UserType or token empty. Navigating to UserTypeScreen.");
+        Navigator.of(context).pushReplacement(_fadeRoute(UserTypeScreen()));
+      }
     });
+
+    // Future.delayed(Duration(seconds: 6), () {
+    //   if (userType == "patient" && token.isNotEmpty) {
+    //     Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => PatientDashboard(),
+    //       ),
+    //     );
+    //   } else if (userType == "therapist" && token.isNotEmpty) {
+    //     if (profileStatus == "APPROVED") {
+    //       Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => CounsellorDashboard()),
+    //       );
+    //     } else if (["PENDING_REGISTRATION", "PENDING_APPROVAL", "REJECTED", "SUSPENDED"].contains(profileStatus)) {
+    //       Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => CounsellorStatusScreen()),
+    //       );
+    //     } else {
+    //       Navigator.of(context).pushReplacement(_fadeRoute(UserTypeScreen()));
+    //     }
+    //   }
+    // });
   }
 
 // Custom fade transition
@@ -122,7 +209,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         const end = Offset(0, 0);
         const curve = Curves.fastOutSlowIn;
 
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(begin: begin, end: end).chain(
+            CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),
@@ -130,7 +218,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         );
       },
     );
-
   }
 
   @override
@@ -150,8 +237,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     // width: double.infinity,
                     // height: double.infinity,
                     decoration: BoxDecoration(
-                     shape: BoxShape.circle,
-                      color: AppColors.redOrange, // Keep the background color fixed during zoom-out
+                      shape: BoxShape.circle,
+                      color: AppColors
+                          .redOrange, // Keep the background color fixed during zoom-out
                     ),
                   ),
                 ),
@@ -187,7 +275,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       ),
                     );
                   },
-                  child: Image.asset('assets/images/tenxLogo.png',height: 150, width: 150),
+                  child: Image.asset(
+                      'assets/images/tenxLogo.png', height: 150, width: 150),
                 ),
               ),
             ],
@@ -202,8 +291,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _controller.dispose();
     super.dispose();
   }
-}
 
+}
 
 
 // class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
@@ -348,22 +437,4 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 //     _controller.dispose();
 //     super.dispose();
 //   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

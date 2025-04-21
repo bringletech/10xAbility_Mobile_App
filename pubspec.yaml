@@ -42,11 +42,19 @@ dependencies:
   google_fonts: any
   intl: any
   carousel_slider: any
-  smooth_page_indicator: ^1.0.0
+  smooth_page_indicator: any
   flutter_dash: any
   video_player: any
   url_launcher: any
   get: any
+  fluttertoast: any
+  shared_preferences: any
+  flutter_switch: any
+  dotted_border: any
+  path_provider: any
+  permission_handler: any
+  multi_select_flutter: any
+
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +94,9 @@ flutter:
       fonts:
         - asset: assets/fontFamily/Inter.ttc
           weight: 400
+    - family: Roboto
+      fonts:
+        - asset: assets/fontFamily/Roboto.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

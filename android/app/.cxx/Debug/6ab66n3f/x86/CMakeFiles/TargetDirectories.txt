@@ -1,0 +1,2 @@
+C:/FlutterDev/tenx_app/android/app/.cxx/Debug/6ab66n3f/x86/CMakeFiles/edit_cache.dir
+C:/FlutterDev/tenx_app/android/app/.cxx/Debug/6ab66n3f/x86/CMakeFiles/rebuild_cache.dir

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,7 +7,14 @@ import 'package:ten_x_app/common/commonText/common_text.dart';
 import 'package:ten_x_app/common/commonText/common_text_colors.dart';
 
 class PatientBookAppointment extends StatefulWidget {
-  const PatientBookAppointment({super.key});
+  final String Id;
+  final String profilePicture;
+  final String fullName;
+  final String degree;
+  final String experience;
+  final String languages;
+  final String specialization;
+  const PatientBookAppointment(this.Id,this.profilePicture,this.fullName,this.degree,this.experience,this.languages,this.specialization,{super.key});
 
   @override
   State<PatientBookAppointment> createState() => _PatientBookAppointmentState();
@@ -22,6 +30,7 @@ class _PatientBookAppointmentState extends State<PatientBookAppointment> {
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
+  bool isLoading= false;
 
   // void _showSnackbar() {
   //   ScaffoldMessenger.of(context).showSnackBar(
@@ -36,7 +45,10 @@ class _PatientBookAppointmentState extends State<PatientBookAppointment> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading
+        ? Center(
+      child: CircularProgressIndicator(color: AppColors.darkOrange),)
+        :Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(children: [
@@ -127,84 +139,90 @@ class _PatientBookAppointmentState extends State<PatientBookAppointment> {
                         ],
                       ),
                       clipBehavior: Clip.antiAlias, // Ensures the image stays inside the border
-                      child: Image.asset(
-                        'assets/images/Aditi.png',
-                        height: 130,
-                        width: 110,
-                        fit: BoxFit.cover,
-                      ),
+                      child: CachedNetworkImage(
+                          imageUrl: widget.profilePicture,
+                      errorWidget:(context, url, error) =>
+                          Image.network(
+                            'https://dummyimage.com/500x500/aaa/000000.png&text=No+Image',
+                          ))
                     ),
                     SizedBox(width: 9,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CommonText(
-                          text: "Aditi Mukherjee",
+                          text: widget.fullName,
                           fontSize: 17,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Poppins',
                         ),
                         SizedBox(height: 5,),
                         CommonText(
-                          text: "DMIT Counsellor",
+                          text: widget.degree,
                           fontSize: 13,
                           fontWeight: FontWeight.w300,
                           fontFamily: 'Poppins',
                         ),
-                        SizedBox(height: 3,),
-                        Row(
-                          children: [
-                            CommonText(
-                              text: "4.2",
-                              fontSize: 11,
-                              fontWeight: FontWeight.w300,
-                              fontFamily: 'Poppins',
-                            ), SizedBox(width: 2,),
-                            Row(
-                              children: List.generate(5, (index) {
-                                if (index < 4) {
-                                  return Icon(Icons.star, color:AppColors.redOrange, size: 14);
-                                } else {
-                                  return Icon(Icons.star_half, color:AppColors.redOrange, size: 14);
-                                }
-                              }),
-                            ), SizedBox(width: 2,),
-                            CommonText(
-                              text: "(100+ Reviews)",
-                              fontSize: 11,
-                              fontWeight: FontWeight.w300,
-                              fontFamily: 'Poppins',
-                            ),
-                          ],
-                        ),
+                        // SizedBox(height: 3,),
+                        // Row(
+                        //   children: [
+                        //     CommonText(
+                        //       text: "4.2",
+                        //       fontSize: 11,
+                        //       fontWeight: FontWeight.w300,
+                        //       fontFamily: 'Poppins',
+                        //     ), SizedBox(width: 2,),
+                        //     Row(
+                        //       children: List.generate(5, (index) {
+                        //         if (index < 4) {
+                        //           return Icon(Icons.star, color:AppColors.redOrange, size: 14);
+                        //         } else {
+                        //           return Icon(Icons.star_half, color:AppColors.redOrange, size: 14);
+                        //         }
+                        //       }),
+                        //     ), SizedBox(width: 2,),
+                        //     CommonText(
+                        //       text: "(100+ Reviews)",
+                        //       fontSize: 11,
+                        //       fontWeight: FontWeight.w300,
+                        //       fontFamily: 'Poppins',
+                        //     ),
+                        //   ],
+                        // ),
                         SizedBox(height: 3,),
                         Row(
                           children: [
                             CommonText(text:  "Experience:",
                               fontSize: 12, fontFamily: 'Poppins', fontWeight: FontWeight.w500,),
                             SizedBox(width: 2.5,),
-                            CommonText(text: '190+ Hours Of counselling',
+                            CommonText(text: widget.experience,
                               fontSize: 11, fontFamily: 'Poppins', fontWeight: FontWeight.w300,)
                           ],
                         ),
                         SizedBox(height: 3,),
-                        Row(
+                        Row(crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(text: "Languages:",
                               fontSize: 12, fontFamily: 'Poppins', fontWeight: FontWeight.w500,),
                             SizedBox(width: 2.5,),
-                            CommonText(text:'English, Hindi, Gujarati',
-                              fontSize: 11, fontFamily: 'Poppins', fontWeight: FontWeight.w300,)
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.4,
+                              child: CommonText(text:widget.languages,
+                                fontSize: 11, fontFamily: 'Poppins', fontWeight: FontWeight.w300,),
+                            )
                           ],
                         ),
                         SizedBox(height: 3,),
-                        Row(
+                        Row(crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CommonText(text: "Session Mode:",
+                            CommonText(text: "Specialization:",
                               fontSize: 12, fontFamily: 'Poppins', fontWeight: FontWeight.w500,),
                             SizedBox(width: 2.5,),
-                            CommonText(text: 'Virtual And In-person',
-                              fontSize: 11, fontFamily: 'Poppins', fontWeight: FontWeight.w300,)
+                            Container(
+                              width:  MediaQuery.of(context).size.width*0.35,
+                              child: CommonText(text: widget.specialization,
+                                fontSize: 11, fontFamily: 'Poppins', fontWeight: FontWeight.w300,),
+                            )
                           ],
                         ),
                         SizedBox(height: 10,),

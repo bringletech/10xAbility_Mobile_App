@@ -174,6 +174,7 @@ class _PatientExploreState extends State<PatientExplore> {
                     child: Column(
                       children: [
                         ListView.builder(
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: resources1.length,
