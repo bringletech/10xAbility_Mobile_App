@@ -19,11 +19,14 @@ import '../model/get_appointment_time_slot_response_model.dart';
 import '../model/get_current_counsellor_details_response_model.dart';
 import '../model/get_current_user_details_response_model.dart';
 import '../model/get_monthly_appointment_response_model.dart';
+import '../model/get_past_appointment_response_model.dart';
+import '../model/get_specific_therapist_timeSlot_response_model.dart';
 import '../model/get_therapist_payment_stats_response_model.dart';
 import '../model/get_upcoming_appointment_therapist_response_model.dart';
 import '../model/mobile_verify_response_model.dart';
 
 import '../model/patient_otp_verify_response_model.dart';
+import '../model/upcoming_appointmet_response_model.dart';
 import '../model/upload_profile_picture_response_model.dart';
 
 class CallService extends GetConnect{
@@ -490,6 +493,78 @@ class CallService extends GetConnect{
     print("Approved Therapist List Response IS ${res.statusCode}");
     if (res.statusCode == 200) {
       return GetApprovedTherapistResponseModel.fromJson(res.body);
+    } else {
+      throw Fluttertoast.showToast(
+          msg: res.body["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  //20). Get Specific Therapist TimeSlot List
+  Future<GetSpecificTherapistTimeSlotResponseModel> getSpecificTherapistTimeSlotList(String id,String date, String month,String year) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    accessToken = prefs.getString('userToken');
+    print("Access Token is $accessToken");
+    httpClient.baseUrl = apiBaseUrl;
+    var res = await get('appointment/getTherapistAppointmentSlots/$id?date=$date&month=$month&year=$year',headers: {
+      'accept': 'application/json',
+      'Authorization': "Bearer $accessToken",
+    });
+    print("Specific Therapist TimeSlot List Response IS ${res.statusCode}");
+    if (res.statusCode == 200) {
+      return GetSpecificTherapistTimeSlotResponseModel.fromJson(res.body);
+    } else {
+      throw Fluttertoast.showToast(
+          msg: res.body["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  //21). Get Past Appointment List
+  Future<GetPastAppointmentsResponseModel> getPastAppointmentList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    accessToken = prefs.getString('userToken');
+    print("Access Token is $accessToken");
+    httpClient.baseUrl = apiBaseUrl;
+    var res = await get('appointment/lastAppointments',headers: {
+      'accept': 'application/json',
+      'Authorization': "Bearer $accessToken",
+    });
+    print("Past Appointment List Response IS ${res.statusCode}");
+    if (res.statusCode == 200) {
+      return GetPastAppointmentsResponseModel.fromJson(res.body);
+    } else {
+      throw Fluttertoast.showToast(
+          msg: res.body["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  //22). Get Patient Upcoming Appointment
+  Future<GetPatientUpcomingAppointmentsResponseModel> getUpcomingAppointmentList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    accessToken = prefs.getString('userToken');
+    print("Access Token is $accessToken");
+    httpClient.baseUrl = apiBaseUrl;
+    var res = await get('appointment/upcomingAppointments',headers: {
+      'accept': 'application/json',
+      'Authorization': "Bearer $accessToken",
+    });
+    print("Upcoming Appointment List Response IS ${res.statusCode}");
+    if (res.statusCode == 200) {
+      return GetPatientUpcomingAppointmentsResponseModel.fromJson(res.body);
     } else {
       throw Fluttertoast.showToast(
           msg: res.body["message"],

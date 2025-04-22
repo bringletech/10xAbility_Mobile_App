@@ -151,8 +151,7 @@ class _CreateSlotsForAppointmentState extends State<CreateSlotsForAppointment> {
                     ),
                     GestureDetector(onTap: (){
                       _selectDate(context);
-                    },
-                        child: SvgPicture.asset('assets/svgIcon/editIcon.svg',height: 30,width: 30,)),
+                    }, child: SvgPicture.asset('assets/svgIcon/editIcon.svg',height: 30,width: 30,)),
                   ],
                 ),
               ),

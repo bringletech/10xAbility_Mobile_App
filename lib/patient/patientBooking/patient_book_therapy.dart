@@ -63,7 +63,7 @@ class _BookTherapyState extends State<BookTherapy> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getTimeSlotList();
+    getTherapistList();
   }
 
 
@@ -415,7 +415,7 @@ class _BookTherapyState extends State<BookTherapy> {
     );
   }
 
-  getTimeSlotList() {
+  getTherapistList() {
     setState(() {
       isLoading = true;
       WidgetsBinding.instance.addPostFrameCallback((_) async {
